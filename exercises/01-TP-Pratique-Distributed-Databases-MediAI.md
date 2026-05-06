@@ -72,7 +72,9 @@ SELECT citus_add_node('citus_worker3', 5432);
 
 > **Votre réponse :**
 > 
-> _______________________________________________
+> Dans Citus, le coordinator est le nœud maître qui reçoit toutes les requêtes SQL des clients, génère le plan d'exécution distribué, et orchestre les communications avec les workers. Il contient les métadonnées du cluster (pg_dist_node, pg_dist_shard, etc.) mais ne stocke pas les données distribuées lui-même.
+Les workers sont les nœuds esclaves qui stockent physiquement les shards (fragments) des tables distribuées et exécutent les portions de requêtes que le coordinator leur délègue. Ils n'ont pas de visibilité globale sur le cluster.
+
 
 **Question 1.2.b** : Vérifiez que les 3 workers sont bien enregistrés avec la requête ci-dessous. Combien de lignes obtenez-vous ?
 
