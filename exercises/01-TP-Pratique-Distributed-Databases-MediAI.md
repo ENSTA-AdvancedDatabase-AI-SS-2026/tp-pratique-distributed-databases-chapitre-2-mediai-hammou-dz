@@ -86,7 +86,8 @@ ORDER BY nodeid;
 
 > **Résultat et réponse :**
 > 
-> _______________________________________________
+> On obtient 3 lignes (une par worker enregistré : citus_worker1, citus_worker2, citus_worker3), chacune avec isactive = true.
+
 
 ---
 
@@ -175,14 +176,33 @@ CREATE OR REPLACE VIEW TrainingData_Tokyo AS
 > **Votre code SQL complété :**
 > 
 > ```sql
-> 
+> -- Fragment Paris
+CREATE OR REPLACE VIEW TrainingData_Paris AS
+    SELECT * FROM TrainingData
+    WHERE siteOrigin = 'Paris';
+
+-- Fragment Tunis
+CREATE OR REPLACE VIEW TrainingData_Tunis AS
+    SELECT * FROM TrainingData
+    WHERE siteOrigin = 'Tunis';
+
+-- Fragment Montréal
+CREATE OR REPLACE VIEW TrainingData_Montreal AS
+    SELECT * FROM TrainingData
+    WHERE siteOrigin = 'Montreal';
+
+-- Fragment Tokyo
+CREATE OR REPLACE VIEW TrainingData_Tokyo AS
+    SELECT * FROM TrainingData
+    WHERE siteOrigin = 'Tokyo';
 > ```
 
 #### ✏️ Exercice 2.1.b – Vérifier la completeness (complétude)
 
 La **complétude** garantit que tout tuple de la table globale appartient à au moins un fragment. Vérifiez-la :
 
-```sql
+Oui, la propriété de complétude est respectée. Chaque tuple de TrainingData a exactement une valeur de siteOrigin parmi {Paris, Tunis, Montreal, Tokyo}. La somme des cardinalités des 4 fragments est donc égale au total de la table globale (13 lignes). Aucun tuple n'est perdu et aucun n'est dupliqué → la complétude est garantie.
+```
 -- Compter les lignes par fragment
 SELECT siteOrigin, COUNT(*) AS nb_lignes
 FROM TrainingData
